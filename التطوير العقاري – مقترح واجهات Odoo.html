@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>التطوير العقاري – مقترح واجهات Odoo</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f1ec;--card:#fff;--tx:#1f2a37;--mu:#6b7280;--bd:#e5e0d8;--pr:#714b67;--ac:#017e84;--ok:#2e9e5b;--wr:#e0a100;--er:#d64545;--rd:14px;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15171c;--card:#1f2229;--tx:#eceef2;--mu:#9aa1ad;--bd:#32363f;--pr:#b98aab;--ac:#3cc0c6}}
+:root[data-theme="dark"]{--bg:#15171c;--card:#1f2229;--tx:#eceef2;--mu:#9aa1ad;--bd:#32363f;--pr:#b98aab;--ac:#3cc0c6}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:Tajawal,Tahoma,sans-serif;line-height:1.6}
+header{background:var(--pr);color:#fff;padding:16px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+header h1{font-size:20px;margin:0}header small{opacity:.85}
+nav{display:flex;gap:6px;background:var(--card);padding:8px 16px;border-bottom:1px solid var(--bd);overflow-x:auto}
+nav button{border:0;background:none;color:var(--mu);font:inherit;font-weight:500;padding:8px 16px;border-radius:999px;cursor:pointer;white-space:nowrap}
+nav button.on{background:var(--pr);color:#fff}
+main{max-width:1200px;margin:auto;padding:18px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+.kpi,.card{background:var(--card);border:1px solid var(--bd);border-radius:var(--rd);padding:14px}
+.kpi b{display:block;font-size:26px;color:var(--pr)}.kpi span{color:var(--mu);font-size:13px}
+.wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:860px}
+th,td{padding:8px 6px;border-bottom:1px solid var(--bd);text-align:center}
+th{color:var(--mu);font-weight:500;font-size:12px}
+tbody tr{cursor:pointer}tbody tr:hover{background:color-mix(in srgb,var(--ac) 8%,transparent)}
+.pc{display:inline-block;min-width:44px;padding:2px 6px;border-radius:6px;font-weight:700;font-size:12px;color:#1f2a37}
+.p0{background:#eee;color:#888}.p1{background:#fde68a}.p2{background:#bbf7d0}
+.tag{padding:2px 10px;border-radius:999px;font-size:12px;font-weight:500}
+.late{background:#fde2e2;color:var(--er)}.go{background:#fff3cd;color:#8a6500}.done{background:#d9f5e3;color:#1c7a45}.sold{background:#e5e0f5;color:#5b45a8}
+select,input[type=text]{font:inherit;padding:8px 10px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:800px){.grid2{grid-template-columns:1fr}}
+.stage{display:grid;grid-template-columns:90px 1fr 48px;gap:10px;align-items:center;padding:7px 0;border-bottom:1px dashed var(--bd)}
+.stage input[type=range]{width:100%;accent-color:var(--ac)}
+.bar{height:10px;background:var(--bd);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--ac),var(--ok));transition:width .3s}
+.task{display:flex;gap:10px;align-items:center;padding:10px;border:1px solid var(--bd);border-radius:10px;margin-bottom:8px}
+.task.ok{opacity:.55;text-decoration:line-through}
+.role{font-size:11px;background:var(--pr);color:#fff;padding:1px 9px;border-radius:999px}
+.log{font-size:13px;color:var(--mu);max-height:200px;overflow:auto}.log div{padding:3px 0;border-bottom:1px dotted var(--bd)}
+h3{margin:0 0 10px;font-size:16px}
+.map{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.map .card h4{margin:0 0 8px;color:var(--pr)}.map li{margin:3px 0;font-size:14px}.map ul{padding-inline-start:18px;margin:0}
+.odoo{font-size:12px;color:var(--ac);margin-top:8px;display:block}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+</style>
+</head>
+<body>
+<header><div><h1>🏗️ إدارة التطوير العقاري</h1><small>نموذج واجهات مقترح لإضافته في Odoo – تقرير بتاريخ 07/11/2026</small></div><small>Odoo · وحدة التطوير العقاري</small></header>
+<nav id="nav"><button data-t="dash" class="on">لوحة المتابعة</button><button data-t="life">حياة المشروع</button><button data-t="org">الأقسام والهيكل</button></nav>
+<main>
+<section id="dash">
+<div class="kpis" id="kpis"></div>
+<div class="row"><select id="fs"><option value="">كل الحالات</option><option value="late">متأخر</option><option value="go">قيد التنفيذ</option><option value="done">منتهي</option><option value="sold">مباع</option></select><input type="text" id="q" placeholder="بحث برقم القطعة أو المشروع"></div>
+<div class="card wrap"><table><thead><tr id="th"></tr></thead><tbody id="tb"></tbody></table><span class="odoo">في Odoo: عرض List/Pivot على موديل project.unit مع تلوين تلقائي حسب النسبة، والنقر يفتح نموذج الوحدة.</span></div>
+</section>
+
+<section id="life" hidden>
+<div class="row"><select id="us"></select><span id="ust"></span></div>
+<div class="grid2">
+<div class="card"><h3>مراحل المشروع (تحديث تلقائي للنسبة)</h3><div id="stages"></div><div style="margin-top:12px">الإنجاز الكلي<div class="bar"><i id="tot"></i></div></div></div>
+<div>
+<div class="card" style="margin-bottom:16px"><h3>المهام المكلّفة (مقاول · مشرف · مهندس · حارس)</h3><div id="tasks"></div><span class="odoo">في Odoo: تُنشأ أنشطة (mail.activity) وتُسند تلقائيًا عند اكتمال كل مرحلة.</span></div>
+<div class="card"><h3>سجل الأتمتة</h3><div class="log" id="log"></div></div>
+</div></div>
+</section>
+
+<section id="org" hidden>
+<div class="map" id="map"></div>
+</section>
+</main>
+<script>
+const S=[["تصميم","مهندس"],["رخص","مهندس"],["فرز","مشرف"],["حفر","مقاول"],["عظم","مقاول"],["تشطيب","مقاول"],["تأمين","مشرف"],["إشغال","مهندس"],["كهرباء","مقاول"],["تسويق","تسويق"],["بيع","مبيعات"]];
+const NOW=new Date(2026,10,7);
+const pd=s=>{const m=/(\d+)\/(\d+)\/(\d+)/.exec(s||"");return m?new Date(m[3],m[2]-1,m[1]):null};
+const U=[];
+function add(p,pl,ar,ty,st,en,o={},sold){const v=[100,100,100,100,100,100,100,100,100,0,0];
+ if(o.f!=null)v[5]=o.f;if(o.i!=null)v[6]=o.i;if(o.o!=null)v[7]=o.o;if(o.e!=null)v[8]=o.e;
+ if(sold){for(let i=3;i<11;i++)v[i]=0;v[10]=0}
+ U.push({p,pl,ar,ty,st,en,v,sold:!!sold,log:[]})}
+add("المشروع الأول","1027",900,"14 شقة","25/01/2025","15/09/2026");
+add("المشروع الثاني","4144",337,"فيلا","01/02/2025","تم الانتهاء");
+add("المشروع الثاني","4146/1",500,"فيلا","01/02/2025","20/09/2026",{f:95,e:85});
+add("المشروع الثاني","4146/2",512,"فيلا","01/02/2025","21/09/2026",{f:95,e:85});
+add("المشروع الثالث","3979",900,"17 شقة","17/02/2025","15/10/2026",{f:85,i:85,o:0,e:0});
+["1908/1","1908/2","1909/1","1909/2"].forEach(x=>add("المشروع الرابع",x,375,"فيلا","17/03/2025","تم الانتهاء"));
+add("المشروع الخامس","1913/1",450,"فيلا","17/03/2025","25/09/2026");
+add("المشروع الخامس","1913/2",450,"فيلا","17/03/2025","25/09/2026",{e:90});
+["1929/1","1929/2"].forEach(x=>add("المشروع السادس",x,450,"فيلا","17/03/2025","15/09/2026"));
+["3609/1","3609/2"].forEach(x=>add("المشروع السابع",x,375,"فيلا بحفة","17/03/2025","20/09/2026"));
+add("المشروع الثامن","3597/1",450,"فيلا بحفة","17/03/2025","20/09/2026");
+add("المشروع الثامن","3597/2",450,"بيع","","",{},1);
+add("المشروع التاسع","3505/1",450,"فيلا بحفة","17/03/2025","20/09/2026",{o:0});
+add("المشروع التاسع","3505/2",450,"بيع","","",{},1);
+["3647/1","3647/2"].forEach(x=>add("المشروع العاشر",x,375,"فيلا بحفة","17/03/2025","20/09/2026",{e:90}));
+const prog=u=>Math.round(u.v.slice(0,9).reduce((a,b)=>a+b,0)/9);
+function status(u){if(u.sold)return"sold";const p=prog(u);if(p>=100)return"done";const e=pd(u.en);if(e&&e<NOW)return"late";return"go"}
+const SL={late:"متأخر",go:"قيد التنفيذ",done:"منتهي",sold:"مباع (أرض)"};
+const pc=n=>`<span class="pc ${n==0?"p0":n<100?"p1":"p2"}">${n==0?"—":n+"%"}</span>`;
+let cur=0;
+document.getElementById("th").innerHTML=["الحالة","المشروع","القطعة","م²","النوع","المنتهى المتوقع",...S.map(s=>s[0]),"الإنجاز"].map(h=>`<th>${h}</th>`).join("");
+function dash(){
+ const f=document.getElementById("fs").value,q=document.getElementById("q").value.trim();
+ const cnt={late:0,go:0,done:0,sold:0};U.forEach(u=>cnt[status(u)]++);
+ document.getElementById("kpis").innerHTML=`<div class="kpi"><b>${U.length}</b><span>إجمالي الوحدات</span></div><div class="kpi"><b>${cnt.go}</b><span>قيد التنفيذ</span></div><div class="kpi"><b style="color:var(--er)">${cnt.late}</b><span>متأخرة عن الموعد</span></div><div class="kpi"><b style="color:var(--ok)">${cnt.done}</b><span>منتهية</span></div><div class="kpi"><b>${cnt.sold}</b><span>أراضٍ مباعة</span></div>`;
+ document.getElementById("tb").innerHTML=U.map((u,i)=>[u,i]).filter(([u])=>(!f||status(u)==f)&&(!q||(u.pl+u.p).includes(q))).map(([u,i])=>{const s=status(u);return`<tr onclick="openU(${i})"><td><span class="tag ${s}">${SL[s]}</span></td><td>${u.p}</td><td><b>${u.pl}</b></td><td>${u.ar}</td><td>${u.ty}</td><td>${u.en||"—"}</td>${u.v.map(n=>`<td>${pc(n)}</td>`).join("")}<td><b>${prog(u)}%</b></td></tr>`}).join("");
+}
+function openU(i){cur=i;tab("life");document.getElementById("us").value=i;life()}
+document.getElementById("us").innerHTML=U.map((u,i)=>`<option value="${i}">${u.p} – قطعة ${u.pl}</option>`).join("");
+document.getElementById("us").onchange=e=>{cur=+e.target.value;life()};
+function life(){
+ const u=U[cur],s=status(u);
+ document.getElementById("ust").innerHTML=`<span class="tag ${s}">${SL[s]}</span> المنتهى المتوقع: ${u.en||"—"}`;
+ document.getElementById("stages").innerHTML=S.map((m,i)=>`<div class="stage"><span>${m[0]}</span><input type="range" min="0" max="100" step="5" value="${u.v[i]}" oninput="setP(${i},this.value)"><b>${u.v[i]}%</b></div>`).join("");
+ document.getElementById("tot").style.width=prog(u)+"%";
+ let t=[];
+ S.forEach((m,i)=>{if(u.v[i]<100&&(i==0||u.v[i-1]>=100||i>=9))t.push({i,r:m[1],x:`إكمال مرحلة «${m[0]}» (الحالي ${u.v[i]}%)`,d:0})});
+ if(!u.sold&&prog(u)<100)t.push({i:-1,r:"حارس",x:"تسجيل الحضور والجولة اليومية للموقع",d:0},{i:-2,r:"مشرف",x:"رفع تقرير المتابعة الأسبوعي بالصور",d:0});
+ document.getElementById("tasks").innerHTML=t.map(k=>`<div class="task"><span class="role">${k.r}</span><span style="flex:1">${k.x}</span>${k.i>=0?`<button onclick="setP(${k.i},100)" style="font:inherit;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:8px;padding:3px 10px;cursor:pointer">إنجاز ✓</button>`:""}</div>`).join("")||"<div style='color:var(--mu)'>لا توجد مهام مفتوحة 🎉</div>";
+ document.getElementById("log").innerHTML=u.log.map(l=>`<div>${l}</div>`).join("")||"<div>لا توجد أحداث بعد – عدّل نسبة أي مرحلة لترى الأتمتة.</div>";
+}
+function setP(i,val){const u=U[cur];val=+val;const old=u.v[i];u.v[i]=val;
+ const ts=new Date().toLocaleTimeString("ar-SA");
+ u.log.unshift(`${ts} – «${S[i][0]}»: ${old}% ← ${val}%`);
+ if(val>=100&&old<100){const n=S[i+1];if(n)u.log.unshift(`${ts} – أتمتة: تكليف ${n[1]} بمرحلة «${n[0]}» وإشعاره`);else u.log.unshift(`${ts} – أتمتة: اكتملت المراحل`)}
+ if(prog(u)>=100)u.log.unshift(`${ts} – أتمتة: المشروع جاهز، إشعار فريق التسويق والمبيعات`);
+ life();dash()}
+const ORG={"التطوير الداخلي":{"المالية":["عقود","قروض وسندات","ضمانات","رواتب","اشتراكات وحسابات","سداد حكومي"],"الهياكل (التطوير)":["مدير إدارة التطوير","مدير إدارة هندسية","مهندس موقع","مشرف","حارس"],"الموارد البشرية HR":["تهيئة موظفين جدد"],"الإدارة":["إصدار الجداول","تقويم وتقارير"],"التسويق":["مخططات بيع","صك ومستمرة","نشر الإنجاز","ضمانات"]},"التطوير الخارجي":{"شركة كهرباء":["خدمات"],"مكاتب هندسية":["تصميم","إشراف"],"المقاولين والموردين":["عقد","إشراف","تنفيذ"],"الغرف التجارية":["تراخيص"],"استشارات قانونية":["عقود ومراجعة"]}};
+document.getElementById("map").innerHTML=Object.entries(ORG).map(([g,d])=>`<div class="card" style="grid-column:1/-1"><h3>${g}</h3><div class="map">${Object.entries(d).map(([k,v])=>`<div class="card"><h4>${k}</h4><ul>${v.map(x=>`<li>${x}</li>`).join("")}</ul></div>`).join("")}</div></div>`).join("")+`<div class="card" style="grid-column:1/-1"><h3>ضمانات ما بعد التسليم</h3><ul><li>ضمان إتمام بناء · تأمين وثيقة · تقدير ترخيص · ضمان منزل</li></ul><span class="odoo">في Odoo: كل قسم = فريق (Team) وصلاحيات، والجهات الخارجية = جهات اتصال (Contacts) مرتبطة بالمشروع.</span></div>`;
+function tab(t){["dash","life","org"].forEach(x=>document.getElementById(x).hidden=x!=t);document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.t==t))}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{tab(b.dataset.t);if(b.dataset.t=="life")life()});
+document.getElementById("fs").onchange=dash;document.getElementById("q").oninput=dash;
+dash();
+</script>
+</body>
+</html>
